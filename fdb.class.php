@@ -1,67 +1,41 @@
 <?php
 /*
-CREATE TABLE IF NOT EXISTS `king` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `V01` varchar(255) DEFAULT NULL,
-  `V02` varchar(255) DEFAULT NULL,
-  `V03` varchar(255) DEFAULT NULL,
-  `V04` varchar(255) DEFAULT NULL,
-  `V05` varchar(255) DEFAULT NULL,
-  `T06` text,
-  `T07` text,
-  `T08` text,
-  `I09` int(11) DEFAULT NULL,
-  `I10` int(11) DEFAULT NULL,
-  `I11` int(11) DEFAULT NULL,
-  `I12` int(11) DEFAULT NULL,
-  `I13` int(11) DEFAULT NULL,
-  `D14` date DEFAULT NULL,
-  `D15` date DEFAULT NULL,
-  `F16` float(10,2) DEFAULT NULL,
-  `F17` float(10,2) DEFAULT NULL,
-  `C18` char(1) DEFAULT NULL,
-  `S19` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-*/
-/*
 Version 1.7 | 2016-07-04
 */
 
 class fdb {
   
-  	public $id 	="";
-  	public $V01	="";
-	public $V02	="";
-	public $V03	="";
-	public $V04	="";
-	public $V05	="";
-	public $T06	="";
-	public $T07	="";
-	public $T08	="";
-	public $I09	="";
-	public $I10	="";
-	public $I11	="";
-	public $I12	="";
-	public $I13	="";
+  	public $id ="";
+  	public $V01 ="";
+	public $V02 ="";
+	public $V03 ="";
+	public $V04 ="";
+	public $V05 ="";
+	public $T06 ="";
+	public $T07 ="";
+	public $T08 ="";
+	public $I09 ="";
+	public $I10 ="";
+	public $I11 ="";
+	public $I12 ="";
+	public $I13 ="";
 	public $D14 ="";
 	public $D15 ="";
 	public $F16 ="";
 	public $F17 ="";
 	public $C18 ="";
-	private $tabella="";
+	private $table="";
 	private $debugsql="";
 	private $host="";
-	private $nomehost = "mysql.non-agency.com";     
-	private $nomeuser = "ad2sell2";          
-	private $password = "ad2sell2"; 
-	private $nomedb = "libreriaeur";
+	private $nomehost = "";//HOSTNAME     
+	private $nomeuser = "";//USERNAME          
+	private $password = "";//PASSWORD 
+	private $nomedb = "";//DBNAME
 
 	function __construct($table) {
-       $this->tabella="fdb_".$table;
+       $this->table="fdb_".$table;
        $conn = new PDO("mysql:host=".$this->nomehost.";dbname=".$this->nomedb.";charset=utf8", $this->nomeuser, $this->password);
-       $sql  = "CREATE TABLE IF NOT EXISTS ".$this->tabella." (
+       $sql  = "CREATE TABLE IF NOT EXISTS ".$this->table." (
   				id int(11) NOT NULL AUTO_INCREMENT,
   				V01 varchar(255) DEFAULT NULL,
 				V02 varchar(255) DEFAULT NULL,
@@ -93,7 +67,7 @@ class fdb {
 		if ($id==0) {
 				$allresults=NULL;
 				// multiple selection
-				$sql="SELECT * FROM ".$this->tabella." WHERE 1 ORDER BY ".$field." ".$ord;
+				$sql="SELECT * FROM ".$this->table." WHERE 1 ORDER BY ".$field." ".$ord;
 				$this->debugsql=$sql;
 				$res=$conn->query($sql);
 				if ($res->columnCount() === 0) {
@@ -125,7 +99,7 @@ class fdb {
 				return $allresults; 
 			} else {
 			// single selection
-			$sql="SELECT * FROM ".$this->tabella." WHERE id=".$id;
+			$sql="SELECT * FROM ".$this->table." WHERE id=".$id;
 			$this->debugsql=$sql;
 			$result=$conn->query($sql);
 			$row = $result->fetch();
@@ -186,7 +160,7 @@ class fdb {
 		}
 
 		try {
-			$storedprod=$conn->prepare("INSERT INTO ".$this->tabella."(V01,V02,V03,V04,V05,T06,T07,T08,I09,I10,I11,I12,I13,D14,D15,F16,F17,C18) VALUES 
+			$storedprod=$conn->prepare("INSERT INTO ".$this->table."(V01,V02,V03,V04,V05,T06,T07,T08,I09,I10,I11,I12,I13,D14,D15,F16,F17,C18) VALUES 
 			(:V01, :V02, :V03, :V04, :V05, :T06, :T07, :T08, :I09, :I10, :I11, :I12, :I13, :D14, :D15, :F16, :F17, :C18)");   
 
 			(is_null($V01)) ? $storedprod->bindParam(':V01', $V01, PDO::PARAM_NULL) : $storedprod->bindParam(':V01', $V01, PDO::PARAM_STR);
@@ -274,7 +248,7 @@ class fdb {
 			if (!is_null($F17)) {$tempquery.="F17=:F17,";}
 			if (!is_null($C18)) {$tempquery.="C18=:C18,";}
 			$tempquery=rtrim($tempquery,",");
-			$storedprod=$conn->prepare("UPDATE ".$this->tabella." SET ".$tempquery." WHERE id=:id;");   
+			$storedprod=$conn->prepare("UPDATE ".$this->table." SET ".$tempquery." WHERE id=:id;");   
 			try {
 				$storedprod->bindParam(':id', $id, PDO::PARAM_INT);		
 				if (!is_null($V01)) {$storedprod->bindParam(':V01', $V01, PDO::PARAM_STR);}
@@ -308,7 +282,7 @@ class fdb {
 			//isn't $_POST
 			$id=filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 			$conn = new PDO("mysql:host=".$this->nomehost.";dbname=".$this->nomedb.";charset=utf8", $this->nomeuser, $this->password);
-			$storedprod=$conn->prepare("UPDATE ".$this->tabella." SET 
+			$storedprod=$conn->prepare("UPDATE ".$this->table." SET 
 			V01=:V01,
 			V02=:V02,
 			V03=:V03,
@@ -362,7 +336,7 @@ class fdb {
 	public function remove ($id) {
 			$id=filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 			$conn = new PDO("mysql:host=".$this->nomehost.";dbname=".$this->nomedb.";charset=utf8", $this->nomeuser, $this->password);
-			$sql=("DELETE FROM ".$this->tabella." WHERE id=".$id);
+			$sql=("DELETE FROM ".$this->table." WHERE id=".$id);
 			$this->debugsql=$sql;
 			$conn->query($sql);
 			$conn= NULL;
@@ -372,7 +346,7 @@ class fdb {
 	public function total ($field=NULL, $val=NULL) {
 			$conn = new PDO("mysql:host=".$this->nomehost.";dbname=".$this->nomedb.";charset=utf8", $this->nomeuser, $this->password);
 			if (is_null($field)) {
-				$sql=("SELECT count(*) FROM ".$this->tabella);
+				$sql=("SELECT count(*) FROM ".$this->table);
 			} else {
 				//insert quotation marks for string fields
 				switch ($field) {
@@ -390,7 +364,7 @@ class fdb {
 						$val="'".$val."'";
 					break;
 				}
-				$sql=("SELECT count(*) FROM ".$this->tabella." WHERE ".$field."=".$val);
+				$sql=("SELECT count(*) FROM ".$this->table." WHERE ".$field."=".$val);
 			}
 			$this->debugsql=$sql;
 			$result=$conn->query($sql);
@@ -408,7 +382,7 @@ class fdb {
 		$conn = new PDO("mysql:host=".$this->nomehost.";dbname=".$this->nomedb.";charset=utf8", $this->nomeuser, $this->password);
 		$htmlreturn="";
 		// multiple selection
-		$sql="SELECT id,".$field." FROM ".$this->tabella." WHERE 1 ORDER BY ".$field." ".$ord;
+		$sql="SELECT id,".$field." FROM ".$this->table." WHERE 1 ORDER BY ".$field." ".$ord;
 		$this->debugsql=$sql;
 		foreach ($conn->query($sql) as $row) {
 				if ($id==$row[0]) {
