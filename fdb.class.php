@@ -1,6 +1,6 @@
 <?php
 /*
-Version 1.7 | 2016-07-04
+Version 1.8 | 2016-09-01
 */
 
 class fdb {
@@ -24,6 +24,7 @@ class fdb {
 	public $F16 ="";
 	public $F17 ="";
 	public $C18 ="";
+	public $S19 ="";
 	private $table="";
 	private $debugsql="";
 	private $host="";
@@ -93,6 +94,7 @@ class fdb {
 					$allresults['F16'][]=$row[16];
 					$allresults['F17'][]=$row[17];
 					$allresults['C18'][]=$row[18];
+					$allresults['S19'][]=$row[19];
 					}
 				}
 				$conn= NULL;
@@ -122,6 +124,7 @@ class fdb {
 			$this->F16=$row[16];
 			$this->F17=$row[17];
 			$this->C18=$row[18];
+			$this->S19=$row[19];
 			$conn= NULL;
 			return $id;
 			}
