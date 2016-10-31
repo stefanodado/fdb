@@ -567,7 +567,11 @@ class fdb {
     		if (preg_match('/('.$disAllow.')/', strtoupper($query)) == 0) {
         		// Execute query
     			$result=$conn->query($query);
+			if (is_null($result)) {
+				return null;
+			} else  {    
 				return $result->fetchAll();
+			}
     		} else {
     			return false;
     		}
