@@ -350,7 +350,7 @@ class fdb {
 			if (!is_null($C26)) {$tempquery.="C26=:C26,";}
 			if (!is_null($C27)) {$tempquery.="C27=:C27,";}
 			if (!is_null($C28)) {$tempquery.="C28=:C28,";}
-			if (!is_null($C28)) {$tempquery.="C29=:C29,";}
+			if (!is_null($C29)) {$tempquery.="C29=:C29,";}
 			
 			$tempquery=rtrim($tempquery,",");
 			$storedprod=$conn->prepare("UPDATE ".$this->table." SET ".$tempquery." WHERE id=:id;");   
