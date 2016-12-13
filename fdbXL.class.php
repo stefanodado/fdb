@@ -1,6 +1,6 @@
 <?php
 /*
-Version 2.0 | 2016-09-02
+Version 2.5 | 2016-12-13
 */
 class fdb {
   
