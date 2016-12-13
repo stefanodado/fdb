@@ -423,6 +423,43 @@ class fdb {
 			return false;
 		}
 	}
+	
+	public function compQUERY ($fields_wish=array(), $where_fields=array(), $from=0,  $to=0)  {
+		
+		$strString="SELECT ";
+		
+		//fields list
+		if (empty($fields_wish)) {
+			$strString.=" * ";
+		} else {
+			foreach ($fields_wish as $item) {
+				$strString.=$item.",";
+			}
+			$strString=rtrim($strString,',');
+		}
+		$strString.=" FROM ".$this->table." WHERE ";
+		
+		//WHERE conditions
+		if (empty($where_fields)) {
+		    $strString.="1=1 ";
+		} else {
+		    foreach ($where_fields as $key => $value) {
+				$filter_value=filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+		        $strString.=$key."='".$filter_value."' AND ";
+		    }
+		    $strString=rtrim($strString,'AND ');
+		}
+		
+		//LIMIT conditions
+		$to_filter=filter_var($to,FILTER_SANITIZE_NUMBER_INT);
+		$from_filter=filter_var($from,FILTER_SANITIZE_NUMBER_INT);
+		if ($to_filter<>0) {
+			$strString.=" LIMIT ".$from_filter.",".$to_filter;
+			return $this->querySTR($strString);
+		} else {
+			return $this->querySTR($strString);
+		}
+	}
 
 }    
 ?>
